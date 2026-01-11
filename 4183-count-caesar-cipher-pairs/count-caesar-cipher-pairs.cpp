@@ -1,20 +1,24 @@
 class Solution {
 public:
     long long countPairs(vector<string>& words) {
-        map<vector<int>, long long> mp;
+        unordered_map <string,long long>mp;
 
-        for (string &s : words) {
-            vector<int> key;
-            for (char c : s) {
-                key.push_back((c - s[0] + 26) % 26);
+        for(string &s:words)
+        {
+            int m=s.size();
+            string temp="";
+            for(int i=0;i<m;i++)
+            {
+                int diff=(s[i]-s[0]+26)%26;
+                temp+=to_string(diff)+"*";//because [0,1,11] and [0,11,1] will form same temp but both are diff in reality
             }
-            mp[key]++;
-        }
-
-        long long ans = 0;
-        for (auto &x : mp) {
-            long long k = x.second;
-            ans += k * (k - 1) / 2;
+            mp[temp]++;
+        } 
+        long long ans=0;
+        for(auto it:mp)
+        {
+            long long val=it.second;
+            ans+=(val*(val-1))/2;
         }
         return ans;
     }
