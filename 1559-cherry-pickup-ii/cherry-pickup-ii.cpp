@@ -7,18 +7,18 @@ public:
         if(dp[row][col1][col2]!=-1) return dp[row][col1][col2];
 
         int cur=0;
-        if(col1!=col2) cur=grid[row][col1]+grid[row][col2];
-        else cur=grid[row][col1];
-
-        int next_max=0;
+        int tot=0;
         for(int x=-1;x<=1;x++)
         {
             for(int y=-1;y<=1;y++)
             {
-                next_max=max(next_max,f(row+1,col1+x,col2+y,n,m,grid,dp));
+                if(col1!=col2)
+                tot=max(tot,grid[row][col1]+grid[row][col2]+f(row+1,col1+x,col2+y,n,m,grid,dp));
+                else
+                tot=max(tot,grid[row][col1]+f(row+1,col1+x,col2+y,n,m,grid,dp));
             }
         }
-        return dp[row][col1][col2]=cur+next_max;
+        return dp[row][col1][col2]=tot;
     }
     int cherryPickup(vector<vector<int>>& grid) {
         int n=grid.size();
