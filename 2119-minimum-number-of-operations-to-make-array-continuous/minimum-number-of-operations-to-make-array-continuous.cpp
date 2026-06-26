@@ -11,9 +11,8 @@ public:
         for(int left=0;left<m;left++)
         {
             int tar_mx=temp[left]+n-1;
-            while(right<m && temp[right]<=tar_mx) right++;
-            int kept=right-left;
-
+            auto ind=upper_bound(temp.begin(),temp.end(),tar_mx)-temp.begin();
+            int kept=ind-left;
             ans=min(ans,n-kept);
         }
 
