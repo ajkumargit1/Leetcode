@@ -20,7 +20,7 @@ public:
         int right = 0;
         int min_len = 2e9;
         int min_start = -1;
-        for (right = 0; right < n; right++) {
+        while(right<n) {
             mp2[s[right]]++;
             while (valid(mp1, mp2)) {
                 int cur_len = right - left + 1;
@@ -31,6 +31,7 @@ public:
                 mp2[s[left]]--;
                 left++;
             }
+            right++;
         }
 
         if (min_len == 2e9)
