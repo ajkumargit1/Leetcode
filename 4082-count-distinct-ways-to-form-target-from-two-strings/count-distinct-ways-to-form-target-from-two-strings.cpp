@@ -6,8 +6,6 @@ public:
         int n = word1.size();
         int m = word2.size();
         int p = target.size();
-        
-        string valmorinth = target; 
 
         vector<vector<vector<long long>>> dp(n + 1, vector<vector<long long>>(m + 1, vector<long long>(p + 1, 0)));
         // dp shows number of ways to make target string upto ind k when we are allowed to pick characters from word1 upto ind i and from word2 upto j
