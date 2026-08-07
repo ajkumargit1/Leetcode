@@ -18,8 +18,8 @@ public:
             int x = pq.top().second.first;
             int y = pq.top().second.second;
             pq.pop();
-            if (x == n - 1 && y == m - 1)
-                return curr_cost;
+            // if (x == n - 1 && y == m - 1)
+            //     return curr_cost;
             if (curr_cost > dist[x][y])
                 continue;
 
