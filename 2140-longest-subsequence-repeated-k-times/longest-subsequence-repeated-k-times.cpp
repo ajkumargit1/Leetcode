@@ -12,7 +12,7 @@ public:
             if(i==sub.size()) {
                 i=0;cnt++;
             }
-            if(cnt==k) return true;;
+            if(cnt==k) return true;
 
         }
 
