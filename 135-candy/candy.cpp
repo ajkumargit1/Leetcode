@@ -2,32 +2,22 @@ class Solution {
 public:
     int candy(vector<int>& ratings) {
         int n = ratings.size();
-        vector<pair<int,int>> v(n);
+        vector<int> candies(n, 1);
         
-        for(int i = 0; i < n; i++) {
-            v[i] = {ratings[i], i};
+        for(int i = 1; i < n; i++) {
+            if(ratings[i] > ratings[i-1]) {
+                candies[i] = candies[i-1] + 1;
+            }
         }
         
-        sort(v.begin(), v.end());
-        
-        vector<int> ans(n, 1);
-        int sm = 0;
-        
-        for(auto it : v) {
-            int val = it.first;
-            int ind = it.second;
-            
-            if(ind > 0 && ratings[ind] > ratings[ind-1]) {
-                ans[ind] = max(ans[ind], ans[ind-1] + 1);
+        int sm = candies[n-1];
+        for(int i = n - 2; i >= 0; i--) {
+            if(ratings[i] > ratings[i+1]) {
+                candies[i] = max(candies[i], candies[i+1] + 1);
             }
-            
-            if(ind < n - 1 && ratings[ind] > ratings[ind+1]) {
-                ans[ind] = max(ans[ind], ans[ind+1] + 1);
-            }
-            
-            sm += ans[ind];
+            sm += candies[i];
         }
-
+        
         return sm;
     }
 };
