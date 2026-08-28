@@ -1,50 +1,57 @@
 class Solution {
-    int m, n;
-    int dr[4] = {-1, 1, 0, 0};
-    int dc[4] = {0, 0, -1, 1};
+public:
+    int dr[4] = {1, -1, 0, 0};
+    int dc[4] = {0, 0, 1, -1};
 
-    int dfs(vector<vector<int>>& grid, int r, int c, int cells_left) {
-        if (r < 0 || r >= m || c < 0 || c >= n || grid[r][c] == -1) {
+    int helper(int i, int j, vector<vector<int>>& grid, int cnt) {
+        int n = grid.size();
+        int m = grid[0].size();
+
+        if (i < 0 || i >= n || j < 0 || j >= m || grid[i][j] == -1)
             return 0;
+
+        if (grid[i][j] == 2) {
+            return  cnt == -1;
         }
 
-        if (grid[r][c] == 2) {
-            return cells_left == 0 ? 1 : 0;
+        int org = grid[i][j];
+        grid[i][j] = -1;
+
+        int ans = 0;
+
+        for (int k = 0; k < 4; k++) {
+            int nr = i + dr[k];
+            int nc = j + dc[k];
+
+            ans += helper(nr, nc, grid, cnt - 1);
         }
 
-        int original_val = grid[r][c];
-        grid[r][c] = -1;
+        grid[i][j] = org;
 
-        int paths = 0;
-
-        for (int i = 0; i < 4; i++) {
-            paths += dfs(grid, r + dr[i], c + dc[i], cells_left - 1);
-        }
-
-        grid[r][c] = original_val;
-
-        return paths;
+        return ans;
     }
 
-public:
     int uniquePathsIII(vector<vector<int>>& grid) {
-        m = grid.size();
-        n = grid[0].size();
+        int n = grid.size();
+        int m = grid[0].size();
 
-        int start_r = -1, start_c = -1;
-        int empty_c = 1;
+        int row, col;
+        int cnt = 0;
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+
+                if (grid[i][j] == 1) {
+                    row = i;
+                    col = j;
+                }
+
                 if (grid[i][j] == 0) {
-                    empty_c++;
-                } else if (grid[i][j] == 1) {
-                    start_r = i;
-                    start_c = j;
+                    cnt++;
                 }
             }
         }
 
-        return dfs(grid, start_r, start_c, empty_c);
+        return helper(row, col, grid, cnt);
     }
 };
