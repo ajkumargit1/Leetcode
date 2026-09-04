@@ -2,12 +2,12 @@ class Solution {
 public:
     int check(vector<int>&temp,int mid,int n)
     {
-        int l=0;int pairs=0;
-        for(int r=0;r<n;r++)
+        int r=0;int pairs=0;
+        for(int l=0;l<n;l++)
         {
-            while(temp[r]-temp[l]>mid)
-            l++;
-            pairs+=(r-l);
+            while(r<temp.size() && temp[r]-temp[l]<=mid)
+            r++;
+            pairs+=(r-l-1);
         }
         return pairs;
     }
