@@ -1,24 +1,29 @@
 class Solution {
 public:
     int longestDecomposition(string text) {
-        deque<char>dq1,dq2;
         int n=text.size();
-        int i=0,j=n-1;
+        const unsigned long long base = 31;
+        unsigned long long left_hash=0;
+        unsigned long long right_hash=0;
+        unsigned long long power=1;
         int ans=0;
-        while(i<=j)
+        for(int i=0;i<n/2;i++)
         {
-            dq1.push_back(text[i]);
-            dq2.push_front(text[j]);
-            if(dq1==dq2)
-            {
-                if(i==j) ans+=1;
-                else ans+=2;
-                dq1.clear();
-                dq2.clear();
+            int left_char=text[i]-'a'+1;
+            left_hash=left_hash*base + left_char;
+            int right_char=text[n-1-i]-'a'+1;
+            right_hash=right_char*power + right_hash;
+            power*=base;
+
+            if(left_hash==right_hash){
+                ans+=2;
+                left_hash=0;
+                right_hash=0;
+                power=1;
             }
-            i++;j--;
         }
-        if(!dq1.empty() || !dq2.empty()) ans++;
+        if(n&1 || left_hash!=0) ans++;
+
         return ans;
     }
 };
