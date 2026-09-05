@@ -1,34 +1,43 @@
 class Solution {
 public:
-    bool helper(int ind,vector<int>&counts,vector<int>&quantity)
-    {
-        if(ind==quantity.size()) return true;
+    int dp[51][1024];
+    int group_sum[1024];
 
-        for(int i=0;i<counts.size();i++)
+    bool f(int ind,int mask,int target_mask,vector<int>&counts)
+    {
+        if(mask==target_mask) return true;
+        if(ind==counts.size()) return false;
+        if(dp[ind][mask]!=-1) return dp[ind][mask];
+
+        for(int group=0;group<=target_mask;group++)
         {
-            if(counts[i]>=quantity[ind])
+            if((mask & group) == 0)
             {
-                counts[i]-=quantity[ind];
-                if(helper(ind+1,counts,quantity)) return true;
-                counts[i]+=quantity[ind];
+                if(group_sum[group]<=counts[ind])
+                {
+                    if(f(ind+1,mask | group,target_mask,counts))
+                    return dp[ind][mask]=true;
+                }
             }
         }
-        return false;
+        return dp[ind][mask]=false;
     }
     bool canDistribute(vector<int>& nums, vector<int>& quantity) {
-        int n=nums.size();
-        int m=quantity.size();
-        map<int,int>mp;
-        for(auto it:nums){
-            mp[it]++;
-        }
+        unordered_map<int,int>mp;
+        for(int num:nums) mp[num]++;
         vector<int>counts;
-        for(auto it:mp)
+        for(auto it:mp) counts.push_back(it.second);
+        int m=quantity.size();
+        int target_mask=((1<<m) - 1);
+        for(int i=0;i<=target_mask;i++)
         {
-            counts.push_back(it.second);
+            group_sum[i]=0;
+            for(int j=0;j<m;j++)
+            {
+                if(i&(1<<j)) group_sum[i]+=quantity[j];
+            }
         }
-        sort(counts.begin(),counts.end());
-        sort(quantity.rbegin(),quantity.rend());
-        return helper(0,counts,quantity);
+        memset(dp,-1,sizeof(dp));
+        return f(0,0,target_mask,counts);
     }
 };
